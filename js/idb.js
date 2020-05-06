@@ -1,0 +1,39 @@
+import { openDB } from 'idb';
+
+export async function initDB() {
+    const db = await openDB('awesome-todo',  1, {
+        upgrade(db) {
+            const store = db.createObjectStore('task', {
+                keyPath: 'id',
+            });
+            store.createIndex('synced', 'synced');
+            store.createIndex('updated', 'updated');
+            store.createIndex('done', 'done');
+            store.createIndex('date', 'date');
+        },
+    });
+    return db;
+}
+
+export async function setTodos(data) {
+    const db = await initDB();
+    const tx = db.transaction('task', 'readwrite');
+    data.forEach(item => {
+        tx.store.put(item);
+    });
+    await tx.done;
+    return await db.getAll('task');
+}
+
+export async function setTodo(data) {
+    const db = await initDB();
+    const tx = db.transaction('task', 'readwrite');
+    return await tx.store.put(data);
+}
+
+export async function getTodos() {
+    const db = await initDB();
+    return await db.getAll('task');
+}
+
+
