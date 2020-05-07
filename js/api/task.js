@@ -31,7 +31,7 @@ export async function createTodo(data) {
 
 export async function deleteTodo(id) {
     const config = window.config;
-    return fetch(`${config.api}/task/${id}`, {
+    return fetch(`${config.api}/todos/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ export async function deleteTodo(id) {
       console.error(error);
       return false;
     }); 
-  }
+}
 
 export async function fetchTodo(id) {
     return fetch(`${config}/task`, {

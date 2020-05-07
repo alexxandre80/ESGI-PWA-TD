@@ -2,8 +2,21 @@
   "task": [
     {
       "name": "Alex",
-      "content": "Alex est un GENIE",
+      "content": "Alexandre Mandra IW2 ESGI",
+      "state": "En cours",
       "id": 1
+    },
+    {
+      "name": "Task2",
+      "content": "Task2",
+      "state": "En cours",
+      "id": 2
+    },
+    {
+      "name": "Test3",
+      "content": "Test3",
+      "state": "En cours",
+      "id": 3
     }
   ]
 }

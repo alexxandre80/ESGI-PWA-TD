@@ -1,6 +1,5 @@
 import {fetchTodos} from "../api/task.js";
 import {createTodo} from "../api/task.js";
-import {deleteTodo} from "../api/task.js";
 import {setTodos, getTodos, setTodo} from "../idb.js";
 
 export default function Todo(page, data) {
@@ -8,38 +7,37 @@ export default function Todo(page, data) {
     const constructor = document.createElement('div');
     constructor.innerHTML = `
     <div class="card">
-  <section class="text-gray-700 body-font border-t border-gray-200">
-  <div class="container px-5 py-24 mx-auto">
-    <div class="flex flex-col text-center w-full mb-20">
+  <section>
+  <div>
+    <div class="d-flex justify-content-center">
    
-      <form class="w-full max-w-sm">
-  <div class="md:flex md:items-center mb-6">
-    <div class="md:w-1/3">
-      <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" for="inline-full-name">
+      <form>
+  <div>
+    <div>
+      <label>
       Nom de la tâche :
       </label>
     </div>
-    <div class="md:w-2/3">
+    <div class="d-flex justify-content-center">
       <input class="name bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="name" type="text" name="name">
     </div>
   </div>
-  <div class="md:flex md:items-center mb-6">
-    <div class="md:w-1/3">
+  <div>
+    <div>
       <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" for="inline-username">
       Description de la tâche :
       </label>
     </div>
-    <div class="md:w-2/3">
+    <div>
       <input class="content bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="content" name="content" type="text">
     </div>
   </div>
-  <div class="md:flex md:items-center mb-6">
+  <div>
 
-  <div class="md:flex md:items-center">
-    <div class="md:w-1/3"></div>
-    <div class="md:w-2/3">
-      <button class="button  rounded" type="button">
-        Add TODO
+  <div>
+    <div>
+      <button class="button rounded" type="button">
+        Ajouter cette tâche
       </button>
     </div>
   </div>
@@ -48,22 +46,23 @@ export default function Todo(page, data) {
     </div>
     </section>
     
-    <section class="text-gray-700 body-font border-t border-gray-200">
-  <div class="container px-5 py-24 mx-auto">
+    <section>
+  <div>
+  <hr class='pt-1 pb-1'>
   <ul>
-  
-    <li class="flex flex-col text-center todolist">
-    </li>
+
+  <div class="flex flex-col text-center todolist">
+    </div>
    
+  <div>
+    
+  </div>
     </ul>
     </div>
     </section>
 
     </div>
   `;
-
-
-
 
 let dataToSave = [];
 
@@ -76,23 +75,24 @@ let dataToSave = [];
     el.addEventListener("click", () => {
         let name = card.querySelector('#name').value;
         let content = card.querySelector('#content').value;
+        let state = "En cours";
 
         if(!document.offline) {
-            let data = {name: name, content: content}
+            let data = {name: name, content: content, state: state}
 
             createTodo(data).then(() => {
                 let chril = card.querySelector('.todolist').cloneNode(true)
-                chril.innerHTML = "<span class='pb-10'>" + data.name + " - " + data.content + `  <a class='button rounded' href="/${data.id}" >Voir</a>` + "</span> <hr class='pt-4 pb-5'>";
+                chril.innerHTML = "<span class='pb-10'>" + data.name + " - " + data.content + "-" + data.state + `  <a class='button rounded' href="/task/${data.id}" >Voir</a>` + "</span> <hr class='pt-1 pb-1'>";
                 card.appendChild(chril);
 
             })
         }else{
-            let data = {id: Date.now(),name: name, content: content}
+            let data = {id: Date.now(),name: name, content: content, state: state}
 
             setTodo(data).then(() => {
                 dataToSave.push(data);
                 let chril = card.querySelector('.todolist').cloneNode(true)
-                chril.innerHTML = "<span class='pb-10'>" + data.name + " - " + data.content + `  <a class='button rounded' href="/${data.id}" >Voir</a>` + "</span> <hr class='pt-4 pb-5'>";
+                chril.innerHTML = "<span class='pb-10'>" + data.name + " - " + data.content + "-" + data.state +`  <a class='button rounded' href="/task/${data.id}" >Voir</a>` + "</span> <hr class='pt-1 pb-1'>";
                 card.appendChild(chril);
             })
         }
@@ -109,13 +109,14 @@ let dataToSave = [];
     });
 
 
+
     if(!document.offline){
         fetchTodos().then(
             result => {
                 setTodos(result)
                 result.map(data=>{
                     let chril = card.querySelector('.todolist').cloneNode(true)
-                    chril.innerHTML = "<span class='pb-10'>" + data.name + " - " + data.content + `  <a class='button rounded' href="/${data.id}" >Voir</a>` + "</span> <hr class='pt-4 pb-5'>";
+                    chril.innerHTML = "<span class='pb-10'>" + data.name + " - " + data.content + " - " + data.state + `  <a class='button rounded' href="/task/${data.id}" >Voir</a>` + "</span> <hr class='pt-1 pb-1'>";
                     card.appendChild(chril);
                 })
             }
@@ -124,7 +125,7 @@ let dataToSave = [];
         getTodos().then(result=>{
             result.map(data=>{
                 let chril = card.querySelector('.todolist').cloneNode(true)
-                chril.innerHTML = "<span class='pb-10'>" + data.name + " - " + data.content + `  <a class='button  rounded' href="/${data.id}" >Voir</a>` + "</span> <hr class='pt-4 pb-5'>";
+                chril.innerHTML = "<span class='pb-10'>" + data.name + " - " + data.content + "-" + data.state + `  <a class='button rounded' href="/task/${data.id}" >Voir</a>`+ "</span> <hr class='pt-1 pb-1'>";
                 card.appendChild(chril);
             })
         })

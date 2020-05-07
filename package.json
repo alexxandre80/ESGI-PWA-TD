@@ -4,12 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "database": "npx json-server --watch ./data/database.json",
+    "database": "npx json-server --watch data/database.json",
     "server": "npx es-dev-server --app-index index.html --node-resolve --watch -p 8080"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "database": "0.0.2",
     "idb": "^5.0.2",
     "page": "^1.11.6"
   },

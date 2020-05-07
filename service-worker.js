@@ -1,4 +1,4 @@
-//console.log('Service worker loaded !');
+console.log('Service worker loaded !');
 
 const excludeFromCache = [
   'https://www.google.com/images/phd/px.gif',

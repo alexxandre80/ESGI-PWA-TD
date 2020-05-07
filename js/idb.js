@@ -31,6 +31,11 @@ export async function setTodo(data) {
     return await tx.store.put(data);
 }
 
+export async function unsetTodo(id) {
+    const db = await initDB();
+    return await db.delete('task', id);
+  }
+
 export async function getTodos() {
     const db = await initDB();
     return await db.getAll('task');

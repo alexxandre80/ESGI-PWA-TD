@@ -22,6 +22,9 @@ export default function Page(page, id) {
       <p class="text-sm text-gray-600 flex items-center">
         Description de la tache : 
       <p class="text-gray-700 text-base content">Description de la tâche</p>
+      <p class="text-sm text-gray-600 flex items-center">
+        Etat de la tache : 
+      <p class="text-gray-700 text-base state">Etat de la tâche</p>
     </div>
    
   </div>
@@ -54,6 +57,7 @@ export default function Page(page, id) {
             result => {
                         card.querySelector('.name').innerHTML = result.name;
                         card.querySelector('.content').innerHTML = result.content;
+                        card.querySelector('.state').innerHTML = result.state;
                 })
     }else{
         getTodos().then(result=>{
@@ -61,6 +65,7 @@ export default function Page(page, id) {
                 if(data.id === id){
                     card.querySelector('.name').innerHTML = data.name;
                     card.querySelector('.content').innerHTML = data.content;
+                    card.querySelector('.state').innerHTML = data.state;
                 }
             })
         })

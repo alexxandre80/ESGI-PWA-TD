@@ -57,18 +57,30 @@ import checkConnectivity from './network.js';
     const Home = module.default;
 
     const docTitle = document.head.querySelector('title');
-    document.title = `Home - Todo`;
+    document.title = `Home Todo`;
     Home(homeCtn, data);
 
     pages.forEach(page => page.removeAttribute('active'));
     homeCtn.setAttribute('active', true);
   });
 
-  page('/:id', async (ctx) => {
+  page('/task/:id', async (ctx) => {
     const module = await import('./view/task.js');
     const Page = module.default;
     const docTitle = document.head.querySelector('title');
-    document.title = `Todo list`;
+    document.title = `Task`;
+    Page(homeCtn, ctx.params.id);
+
+    pages.forEach(page => page.removeAttribute('active'));
+    homeCtn.setAttribute('active', true);
+  });
+
+
+  page('/delete/:id', async (ctx) => {
+    const module = await import('./view/delete.js');
+    const Page = module.default;
+    const docTitle = document.head.querySelector('title');
+    document.title = `Delete Task`;
     Page(homeCtn, ctx.params.id);
 
     pages.forEach(page => page.removeAttribute('active'));
